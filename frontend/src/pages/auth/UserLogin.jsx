@@ -10,6 +10,8 @@ const UserLogin = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    console.log(import.meta.env.VITE_API_URL)
+
     const email = e.target.email.value;
     const password = e.target.password.value;
 

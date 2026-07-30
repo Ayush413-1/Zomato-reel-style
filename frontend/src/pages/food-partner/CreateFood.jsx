@@ -15,7 +15,7 @@ const CreateFood = () => {
 
     useEffect(() => {
         if (!videoFile) {
-            setVideoURL('');
+            setVideoURL("");
             return;
         }
         const url = URL.createObjectURL(videoFile);
@@ -54,9 +54,9 @@ const CreateFood = () => {
 
         formData.append('name', name);
         formData.append('description', description);
-        formData.append("mama", videoFile);
+        formData.append("video", videoFile);
 
-        const response = await axios.post("http://localhost:3000/api/food", formData, {
+        const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/food`, formData, {
             withCredentials: true,
         })
 

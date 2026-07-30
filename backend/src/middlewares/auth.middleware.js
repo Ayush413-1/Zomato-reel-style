@@ -61,7 +61,7 @@ async function authUserMiddleware(req, res, next) {
 
 }
 
-async function authMiddleware(req, res) {
+async function authMiddleware(req, res,next) {
     try{
         const token = req.cookies.token;
 

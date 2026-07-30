@@ -8,7 +8,7 @@ const cors = require('cors');
 
 const app = express();
 app.use(cors({
-    origin: "https://zomato-reel-style-9gigmf4o4-ayush-7330.vercel.app",
+    origin: "zomato-reel-style-git-main-ayush-7330.vercel.app",
     credentials: true
 }));
 app.use(cookieParser());

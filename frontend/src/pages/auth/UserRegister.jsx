@@ -11,6 +11,8 @@ const UserRegister = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        console.log(import.meta.env.VITE_API_URL);
+
         const firstName = e.target.firstName.value;
         const lastName = e.target.lastName.value;
         const email = e.target.email.value;

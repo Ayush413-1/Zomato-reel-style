@@ -1,5 +1,6 @@
 const express = require('express');
 const authController = require("../controllers/auth.controller")
+const authMiddleware = require("../middlewares/auth.middleware")
 
 const router = express.Router();
 
@@ -16,5 +17,6 @@ router.post('/food-partner/login', authController.loginFoodPartner)
 router.get('/food-partner/logout', authController.logoutFoodPartner)
 
 
+router.get("/me",authMiddleware,authController.getCurrentUser);
 
 module.exports = router;

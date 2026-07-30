@@ -9,13 +9,12 @@ const app = express();
 
 const allowedOrigins = [
     "http://localhost:5173",
-    "https://zomato-reel-style-git-main-ayush-7330.vercel.app",
+    "https://zomato-reel-style-h6xgkkpu4-ayush-7330.vercel.app",
     "https://zomato-reel-style.vercel.app"
 ];
 
 app.use(cors({
     origin: function (origin, callback) {
-
 
         if (!origin) {
             return callback(null, true);

@@ -1,14 +1,14 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import axios from 'axios';
 import '../../styles/create-food.css';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 const CreateFood = () => {
-    const [ name, setName ] = useState('');
-    const [ description, setDescription ] = useState('');
-    const [ videoFile, setVideoFile ] = useState(null);
-    const [ videoURL, setVideoURL ] = useState('');
-    const [ fileError, setFileError ] = useState('');
+    const [name, setName] = useState('');
+    const [description, setDescription] = useState('');
+    const [videoFile, setVideoFile] = useState(null);
+    const [videoURL, setVideoURL] = useState('');
+    const [fileError, setFileError] = useState('');
     const fileInputRef = useRef(null);
 
     const navigate = useNavigate();
@@ -21,10 +21,10 @@ const CreateFood = () => {
         const url = URL.createObjectURL(videoFile);
         setVideoURL(url);
         return () => URL.revokeObjectURL(url);
-    }, [ videoFile ]);
+    }, [videoFile]);
 
     const onFileChange = (e) => {
-        const file = e.target.files && e.target.files[ 0 ];
+        const file = e.target.files && e.target.files[0];
         if (!file) { setVideoFile(null); setFileError(''); return; }
         if (!file.type.startsWith('video/')) { setFileError('Please select a valid video file.'); return; }
         setFileError('');
@@ -34,7 +34,7 @@ const CreateFood = () => {
     const onDrop = (e) => {
         e.preventDefault();
         e.stopPropagation();
-        const file = e.dataTransfer?.files?.[ 0 ];
+        const file = e.dataTransfer?.files?.[0];
         if (!file) { return; }
         if (!file.type.startsWith('video/')) { setFileError('Please drop a valid video file.'); return; }
         setFileError('');
@@ -66,11 +66,25 @@ const CreateFood = () => {
         // setName(''); setDescription(''); setVideoFile(null);
     };
 
-    const isDisabled = useMemo(() => !name.trim() || !videoFile, [ name, videoFile ]);
+    const isDisabled = useMemo(() => !name.trim() || !videoFile, [name, videoFile]);
 
     return (
         <div className="create-food-page">
             <div className="create-food-card">
+                <Link to="/food-partner/profile" className="profile-icon">
+                    <svg
+                        width="28"
+                        height="28"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="white"
+                        strokeWidth="2"
+                    >
+                        <circle cx="12" cy="8" r="4" />
+                        <path d="M5 20c0-3.5 3-6 7-6s7 2.5 7 6" />
+                    </svg>
+                    <i className="ri-user-3-line"></i>
+                </Link>
                 <header className="create-food-header">
                     <h1 className="create-food-title">Create Food</h1>
                     <p className="create-food-subtitle">Upload a short video, give it a name, and add a description.</p>
@@ -143,6 +157,10 @@ const CreateFood = () => {
                             required
                         />
                     </div>
+                    <div className='field-group'>
+                        <label htmlFor="Link">Link</label>
+                        <input type="text" id='foodName' placeholder='Put link of your restaurant' />
+                    </div>
 
                     <div className="field-group">
                         <label htmlFor="foodDesc">Description</label>
@@ -163,6 +181,7 @@ const CreateFood = () => {
                 </form>
             </div>
         </div>
+
     );
 };
 

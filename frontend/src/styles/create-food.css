@@ -149,6 +149,23 @@
   object-fit: contain;
 }
 
+.profile-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  color: #333;
+  font-size: 26px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.profile-icon:hover {
+  color: #e23744;
+}
+
 /* Actions */
 .form-actions { display: flex; gap: var(--space-3); }
 

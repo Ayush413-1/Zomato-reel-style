@@ -1,7 +1,9 @@
 import React, { useState, useEffect, use } from 'react'
 import '../../styles/profile.css'
-import { useParams } from 'react-router-dom'
+import { useParams , Link} from 'react-router-dom'
 import axios from 'axios'
+// import {Home, Bookmark, User} from "lucide-react"
+import BottomNav from "../../components/BottomNav";
 
 const Profile = () => {
     const { id } = useParams()
@@ -31,6 +33,7 @@ const Profile = () => {
                         <p className="profile-pill profile-address" title="Address">
                             {profile?.address}
                         </p>
+                        <a className="profile-pill profile-address" href="https://www.zomato.com/" target="_blank" rel="noopener noreferrer">Store</a>
                     </div>
                 </div>
 
@@ -62,6 +65,7 @@ const Profile = () => {
 
                     </div>
                 ))}
+                <BottomNav/>
             </section>
         </main>
     )

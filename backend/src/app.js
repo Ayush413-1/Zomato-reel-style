@@ -10,11 +10,11 @@ const app = express();
 
 const allowedOrigins = [
     "http://localhost:5173",
-    "https://zomato-reel-style-h6xgkkpu4-ayush-7330.vercel.app",
-    "https://zomato-reel-style.vercel.app"
+    "https://zomato-reel-style.vercel.app",
+    "https://zomato-reel-style-63e14syxu-ayush-7330.vercel.app"
 ];
 
-app.use(cors({
+const corsOptions = {
     origin: function (origin, callback) {
 
         if (!origin) {
@@ -27,8 +27,27 @@ app.use(cors({
 
         return callback(new Error("Not allowed by CORS"));
     },
-    credentials: true
-}));
+
+    credentials: true,
+
+    methods: [
+        "GET",
+        "POST",
+        "PUT",
+        "DELETE",
+        "OPTIONS"
+    ],
+
+    allowedHeaders: [
+        "Content-Type",
+        "Authorization"
+    ]
+};
+
+
+app.use(cors(corsOptions));
+
+app.options("*", cors(corsOptions));
 
 app.use(cookieParser());
 app.use(express.json());

@@ -9,14 +9,11 @@ const commentRoutes = require("./routes/comment.routes");
 const app = express();
 
 const allowedOrigins = [
-    "http://localhost:5173",
-    "http://localhost:3000",
-    "https://zomato-reel-style.vercel.app",
-    "https://zomato-reel-style.onrender.com",
-    "https://zomato-reel-style-oi2gu96jk-ayush-7330.vercel.app",
-    "https://zomato-reel-style-63e14syxu-ayush-7330.vercel.app",
-    "https://zomato-reel-style-ctttk9g6z-ayush-7330.vercel.app",
-    "https://zomato-reel-style-ru7t927z4-ayush-7330.vercel.app"
+  "http://localhost:5173",
+  "https://zomato-reel-style.vercel.app",
+  "https://zomato-reel-style-oi2gu96jk-ayush-7330.vercel.app",
+  "https://zomato-reel-style-63e14syxu-ayush-7330.vercel.app",
+  "https://zomato-reel-style-1e52jim82-ayush-7330.vercel.app"
 ];
 
 const isAllowedOrigin = (origin) => {

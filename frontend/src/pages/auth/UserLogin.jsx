@@ -54,8 +54,13 @@ const UserLogin = () => {
           </div>
           <button className="auth-submit" type="submit">Sign In</button>
         </form>
+        <div className='newaccount'>
         <div className="auth-alt-action">
-          New here? <a href="/user/register">Create account</a>
+          <a href="/user/register">Create account</a>
+        </div>
+        <div className="auth-alt-action">
+        <a href="/food-partner/login">Login as Restaurant</a> 
+        </div>
         </div>
       </div>
     </div>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import '../../styles/auth-shared.css';
 import axios from 'axios';
@@ -7,30 +7,43 @@ import { useNavigate } from 'react-router-dom';
 const UserRegister = () => {
 
     const navigate = useNavigate();
+    const [errorMessage, setErrorMessage] = useState('');
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        console.log(import.meta.env.VITE_API_URL);
-
-        const firstName = e.target.firstName.value;
-        const lastName = e.target.lastName.value;
-        const email = e.target.email.value;
+        const firstName = e.target.firstName.value.trim();
+        const lastName = e.target.lastName.value.trim();
+        const email = e.target.email.value.trim();
         const password = e.target.password.value;
 
+        if (!firstName || !lastName || !email || !password) {
+            setErrorMessage('Please fill in all fields.');
+            return;
+        }
 
-        const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/user/register`, {
-            fullName: firstName + " " + lastName,
-            email,
-            password
-        },
-        {
-            withCredentials: true
-        })
+        if (password.length < 6) {
+            setErrorMessage('Password must be at least 6 characters long.');
+            return;
+        }
 
-        console.log(response.data);
+        try {
+            const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/user/register`, {
+                fullName: firstName + " " + lastName,
+                email,
+                password
+            },
+            {
+                withCredentials: true
+            })
 
-        navigate("/")
+            console.log(response.data);
+            setErrorMessage('');
+            navigate("/")
+        } catch (error) {
+            const message = error?.response?.data?.message || 'Unable to create account.';
+            setErrorMessage(message);
+        }
 
     };
 
@@ -45,6 +58,7 @@ const UserRegister = () => {
                     <strong style={{ fontWeight: 600 }}>Switch:</strong> <Link to="/user/register">User</Link> • <Link to="/food-partner/register">Food partner</Link>
                 </nav>
                 <form className="auth-form" onSubmit={handleSubmit} noValidate>
+                    {errorMessage && <p className="auth-error-message">{errorMessage}</p>}
                     <div className="two-col">
                         <div className="field-group">
                             <label htmlFor="firstName">First Name</label>

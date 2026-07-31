@@ -101,6 +101,16 @@ button.auth-submit:hover { background: var(--color-accent-hover); }
 button.auth-submit:active { transform: translateY(1px); }
 button.auth-submit:focus-visible { outline: 2px solid var(--color-accent-hover); outline-offset: 2px; }
 
+.auth-error-message {
+  margin: 0;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  background: rgba(239, 68, 68, 0.14);
+  color: #fecaca;
+  border: 1px solid rgba(239, 68, 68, 0.25);
+  font-size: 0.95rem;
+}
+
 .auth-alt-action {
   text-align: center;
   font-size: .85rem;
@@ -122,3 +132,18 @@ button.auth-submit:focus-visible { outline: 2px solid var(--color-accent-hover);
 
 /* Smooth transitions for theme change */
 body, .auth-card, .field-group input { transition: background 200ms ease, color 200ms ease, border-color 200ms ease; }
+
+.loading-spinner {
+  width: 42px;
+  height: 42px;
+  border: 4px solid rgba(37, 99, 235, 0.2);
+  border-top-color: var(--color-accent);
+  border-radius: 50%;
+  animation: spin 0.9s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

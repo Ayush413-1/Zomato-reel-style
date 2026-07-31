@@ -1,5 +1,6 @@
-import React, { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
+import Comment from "../pages/general/Comment"
 
 // Reusable feed for vertical reels
 // Props:
@@ -7,7 +8,9 @@ import { Link } from 'react-router-dom'
 // - onLike: (item) => void | Promise<void>
 // - onSave: (item) => void | Promise<void>
 // - emptyMessage: string
-const ReelFeed = ({ items = [], onLike, onSave, emptyMessage = 'No videos yet.' }) => {
+const ReelFeed = ({ items = [], onLike, onSave, emptyMessage = 'No videos yet.', onCommentAdded }) => {
+  const [selectedFoodId, setSelectedFoodId] = useState(null);
+  const [commentCounts, setCommentCounts] = useState({})
   const videoRefs = useRef(new Map())
 
   useEffect(() => {
@@ -33,6 +36,23 @@ const ReelFeed = ({ items = [], onLike, onSave, emptyMessage = 'No videos yet.' 
   const setVideoRef = (id) => (el) => {
     if (!el) { videoRefs.current.delete(id); return }
     videoRefs.current.set(id, el)
+  }
+
+  const getCommentCount = (item) => {
+    const foodId = item._id
+    if (commentCounts[foodId] !== undefined) {
+      return commentCounts[foodId]
+    }
+
+    return item.commentsCount ?? item.commentCount ?? (Array.isArray(item.comments) ? item.comments.length : 0) ?? 0
+  }
+
+  const handleCommentAdded = (foodId) => {
+    setCommentCounts((prev) => ({
+      ...prev,
+      [foodId]: (prev[foodId] ?? 0) + 1
+    }))
+    onCommentAdded?.(foodId)
   }
 
   return (
@@ -62,10 +82,20 @@ const ReelFeed = ({ items = [], onLike, onSave, emptyMessage = 'No videos yet.' 
                 <div className="reel-action-group">
                   <button
                     onClick={onLike ? () => onLike(item) : undefined}
-                    className="reel-action"
+                    className={`reel-action${item.isLiked ? ' like-active' : ''}`}
                     aria-label="Like"
+                    aria-pressed={Boolean(item.isLiked)}
                   >
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <svg
+                      width="22"
+                      height="22"
+                      viewBox="0 0 24 24"
+                      fill={item.isLiked ? '#ef4444' : 'none'}
+                      stroke={item.isLiked ? '#ef4444' : 'currentColor'}
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
                       <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 22l7.8-8.6 1-1a5.5 5.5 0 0 0 0-7.8z" />
                     </svg>
                   </button>
@@ -74,11 +104,21 @@ const ReelFeed = ({ items = [], onLike, onSave, emptyMessage = 'No videos yet.' 
 
                 <div className="reel-action-group">
                   <button
-                    className="reel-action"
+                    className={`reel-action${item.isSaved ? ' save-active' : ''}`}
                     onClick={onSave ? () => onSave(item) : undefined}
                     aria-label="Bookmark"
+                    aria-pressed={Boolean(item.isSaved)}
                   >
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <svg
+                      width="22"
+                      height="22"
+                      viewBox="0 0 24 24"
+                      fill={item.isSaved ? '#fff' : 'none'}
+                      stroke={item.isSaved ? '#fff' : 'currentColor'}
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
                       <path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1z" />
                     </svg>
                   </button>
@@ -86,12 +126,22 @@ const ReelFeed = ({ items = [], onLike, onSave, emptyMessage = 'No videos yet.' 
                 </div>
 
                 <div className="reel-action-group">
-                  <button className="reel-action" aria-label="Comments">
+                  <button
+                    type="button"
+                    className="reel-action"
+                    aria-label="Comments"
+                    onMouseDown={(event) => event.stopPropagation()}
+                    onClick={(event) => {
+                      event.preventDefault();
+                      event.stopPropagation();
+                      setSelectedFoodId(item._id);
+                    }}
+                  >
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z" />
                     </svg>
                   </button>
-                  <div className="reel-action__count">{item.commentsCount ?? (Array.isArray(item.comments) ? item.comments.length : 0)}</div>
+                  <div className="reel-action__count">{getCommentCount(item)}</div>
                 </div>
               </div>
 
@@ -104,7 +154,16 @@ const ReelFeed = ({ items = [], onLike, onSave, emptyMessage = 'No videos yet.' 
             </div>
           </section>
         ))}
-      </div>
+          </div>
+        {
+          selectedFoodId && (
+            <Comment
+              foodId={selectedFoodId}
+              onClose={() => setSelectedFoodId(null)}
+              onCommentAdded={handleCommentAdded}
+            />
+          )
+        }
     </div>
   )
 }

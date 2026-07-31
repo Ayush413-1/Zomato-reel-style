@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import '../../styles/auth-shared.css';
 import axios from 'axios';
@@ -7,16 +7,27 @@ import { useNavigate } from 'react-router-dom';
 const FoodPartnerRegister = () => {
 
   const navigate = useNavigate();
+  const [errorMessage, setErrorMessage] = useState('');
   
   const handleSubmit = (e) => { 
     e.preventDefault();
 
-    const businessName = e.target.businessName.value;
-    const contactName = e.target.contactName.value;
-    const phone = e.target.phone.value;
-    const email = e.target.email.value;
+    const businessName = e.target.businessName.value.trim();
+    const contactName = e.target.contactName.value.trim();
+    const phone = e.target.phone.value.trim();
+    const email = e.target.email.value.trim();
     const password = e.target.password.value;
-    const address = e.target.address.value;
+    const address = e.target.address.value.trim();
+
+    if (!businessName || !contactName || !phone || !email || !password || !address) {
+      setErrorMessage('Please fill in all fields.');
+      return;
+    }
+
+    if (password.length < 6) {
+      setErrorMessage('Password must be at least 6 characters long.');
+      return;
+    }
 
     axios.post(`${import.meta.env.VITE_API_URL}/api/auth/food-partner/register`, {
       name:businessName,
@@ -28,10 +39,12 @@ const FoodPartnerRegister = () => {
     }, { withCredentials: true })
       .then(response => {
         console.log(response.data);
-        navigate("/create-food"); // Redirect to create food page after successful registration
+        setErrorMessage('');
+        navigate("/create-food");
       })
       .catch(error => {
-        console.error("There was an error registering!", error);
+        const message = error?.response?.data?.message || 'Unable to create partner account.';
+        setErrorMessage(message);
       });
   };
 
@@ -46,6 +59,7 @@ const FoodPartnerRegister = () => {
           <strong style={{fontWeight:600}}>Switch:</strong> <Link to="/user/register">User</Link> • <Link to="/food-partner/register">Food partner</Link>
         </nav>
         <form className="auth-form" onSubmit={handleSubmit} noValidate>
+          {errorMessage && <p className="auth-error-message">{errorMessage}</p>}
           <div className="field-group">
             <label htmlFor="businessName">Business Name</label>
             <input id="businessName" name="businessName" placeholder="Tasty Bites" autoComplete="organization" />

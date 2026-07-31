@@ -46,6 +46,14 @@
   pointer-events: none; /* allow click-through except controls */
 }
 
+.reel-actions,
+.reel-content,
+.reel-btn,
+.reel-action,
+.reel-action-group {
+  pointer-events: auto;
+}
+
 /* Subtle top-to-bottom gradient so text is readable on any video */
 .reel-overlay-gradient {
   position: absolute;
@@ -126,9 +134,30 @@
   place-items: center;
   background: color-mix(in srgb, #000 35%, transparent);
   backdrop-filter: blur(2px);
-  color: #fff;
+  color: rgba(255,255,255,0.72);
   border: 1px solid rgba(255,255,255,.15);
   box-shadow: var(--shadow-md);
+  transition: transform var(--transition-base), background var(--transition-base), color var(--transition-base), border-color var(--transition-base);
+  position: relative;
+  z-index: 2;
+}
+
+.reel-action.active {
+  color: #fff;
+  background: rgba(255,255,255,0.16);
+  border-color: rgba(255,255,255,0.35);
+}
+
+.reel-action.save-active {
+  color: #fff;
+  background: rgba(255,255,255,0.16);
+  border-color: rgba(255,255,255,0.35);
+}
+
+.reel-action.like-active {
+  background: rgba(239, 68, 68, 0.18);
+  border-color: rgba(239, 68, 68, 0.45);
+  box-shadow: 0 0 0 1px rgba(239, 68, 68, 0.2), var(--shadow-md);
 }
 
 .reel-action:active { transform: translateY(1px); }

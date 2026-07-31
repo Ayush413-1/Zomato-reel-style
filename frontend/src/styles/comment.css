@@ -1,0 +1,225 @@
+.comment-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.72);
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  z-index: 9999;
+  backdrop-filter: blur(4px);
+}
+
+.comment-modal {
+  width: min(100%, 520px);
+  max-height: 72vh;
+  background: #0f172a;
+  color: #f8fafc;
+  border-top-left-radius: 24px;
+  border-top-right-radius: 24px;
+  padding: 12px 16px 16px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 -12px 32px rgba(0, 0, 0, 0.45);
+  animation: comment-slide-up 220ms ease-out;
+}
+
+.comment-handle {
+  width: 44px;
+  height: 5px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.28);
+  margin: 2px auto 10px;
+}
+
+@keyframes comment-slide-up {
+  from { transform: translateY(100%); opacity: 0.8; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.comment-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(255,255,255,0.12);
+}
+
+.comment-header h3 {
+  margin: 0;
+  font-size: 1rem;
+  color: #f8fafc;
+}
+
+.comment-header p {
+  margin: 4px 0 0;
+  font-size: 0.82rem;
+  color: #94a3b8;
+}
+
+.comment-close-btn {
+  border: none;
+  background: rgba(255,255,255,0.1);
+  color: #f8fafc;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.comment-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px 0 8px;
+}
+
+.comment-item {
+  display: flex;
+  gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.comment-meta-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.comment-menu-wrap {
+  position: relative;
+}
+
+.comment-menu-btn {
+  border: none;
+  background: transparent;
+  color: #fff;
+  font-size: 18px;
+  cursor: pointer;
+  padding: 2px 6px;
+}
+
+.comment-menu {
+  position: absolute;
+  right: 0;
+  top: 24px;
+  background: #1f1f1f;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  min-width: 96px;
+  z-index: 2;
+}
+
+.comment-menu button,
+.comment-edit-actions button {
+  background: transparent;
+  border: none;
+  color: #fff;
+  text-align: left;
+  padding: 8px 10px;
+  cursor: pointer;
+}
+
+.comment-menu button:hover,
+.comment-edit-actions button:hover {
+  background: rgba(255,255,255,0.08);
+}
+
+.comment-edit-box {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.comment-edit-box input {
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 8px;
+  padding: 8px 10px;
+  background: #111;
+  color: #fff;
+}
+
+.comment-edit-actions {
+  display: flex;
+  gap: 8px;
+}
+.comment-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #f43f5e, #8b5cf6);
+  color: #fff;
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.comment-body strong {
+  display: block;
+  font-size: 0.9rem;
+  color: #f8fafc;
+}
+
+.comment-body p {
+  margin: 4px 0 0;
+  font-size: 0.92rem;
+  color: #cbd5e1;
+  line-height: 1.4;
+}
+
+.comment-empty {
+  padding: 24px 8px;
+  text-align: center;
+  color: #94a3b8;
+  font-size: 0.95rem;
+}
+
+.comment-input {
+  display: flex;
+  gap: 10px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255,255,255,0.12);
+}
+
+.comment-input input {
+  flex: 1;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: #111827;
+  color: #f8fafc;
+  border-radius: 999px;
+  padding: 10px 14px;
+  font-size: 0.95rem;
+  outline: none;
+}
+
+.comment-input input:focus {
+  border-color: #f43f5e;
+  box-shadow: 0 0 0 3px rgba(244, 63, 94, 0.18);
+}
+
+.comment-input button {
+  border: none;
+  background: linear-gradient(135deg, #f43f5e, #ec4899);
+  color: #fff;
+  padding: 10px 14px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.comment-input button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+@media (max-width: 480px) {
+  .comment-modal {
+    width: 100%;
+    max-height: 80vh;
+    border-radius: 20px 20px 0 0;
+  }
+}

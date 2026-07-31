@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import '../../styles/auth-shared.css';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -6,21 +6,32 @@ import { useNavigate } from 'react-router-dom';
 const FoodPartnerLogin = () => {
 
   const navigate = useNavigate();
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const email = e.target.email.value;
+    const email = e.target.email.value.trim();
     const password = e.target.password.value;
 
-    const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/food-partner/login`, {
-      email,
-      password
-    }, { withCredentials: true });
+    if (!email || !password) {
+      setErrorMessage('Please enter both email and password.');
+      return;
+    }
 
-    console.log(response.data);
+    try {
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/food-partner/login`, {
+        email,
+        password
+      }, { withCredentials: true });
 
-    navigate("/create-food"); // Redirect to create food page after login
+      console.log(response.data);
+      setErrorMessage('');
+      navigate("/create-food");
+    } catch (error) {
+      const message = error?.response?.data?.message || 'Invalid email or password.';
+      setErrorMessage(message);
+    }
 
   };
 
@@ -32,6 +43,7 @@ const FoodPartnerLogin = () => {
           <p className="auth-subtitle">Access your dashboard and manage orders.</p>
         </header>
         <form className="auth-form" onSubmit={handleSubmit} noValidate>
+          {errorMessage && <p className="auth-error-message">{errorMessage}</p>}
           <div className="field-group">
             <label htmlFor="email">Email</label>
             <input id="email" name="email" type="email" placeholder="business@example.com" autoComplete="email" />

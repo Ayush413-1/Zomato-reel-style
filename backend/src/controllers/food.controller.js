@@ -24,9 +24,23 @@ async function createFood(req, res) {
 
 async function getFoodItems(req, res) {
     const foodItems = await foodModel.find({})
+    const [likedFoods, savedFoods] = await Promise.all([
+        likeModel.find({ user: req.user._id }).select('food'),
+        saveModel.find({ user: req.user._id }).select('food')
+    ])
+
+    const likedFoodIds = new Set(likedFoods.map((item) => item.food.toString()))
+    const savedFoodIds = new Set(savedFoods.map((item) => item.food.toString()))
+
+    const itemsWithState = foodItems.map((item) => ({
+        ...item.toObject(),
+        isLiked: likedFoodIds.has(item._id.toString()),
+        isSaved: savedFoodIds.has(item._id.toString())
+    }))
+
     res.status(200).json({
         message: "Food items fetched successfully",
-        foodItems
+        foodItems: itemsWithState
     })
 }
 
@@ -51,7 +65,8 @@ async function likeFood(req, res) {
         })
 
         return res.status(200).json({
-            message: "Food unliked successfully"
+            message: "Food unliked successfully",
+            isLiked: false
         })
     }
 
@@ -66,7 +81,8 @@ async function likeFood(req, res) {
 
     res.status(201).json({
         message: "Food liked successfully",
-        like
+        like,
+        isLiked: true
     })
 
 }
@@ -92,7 +108,8 @@ async function saveFood(req, res) {
         })
 
         return res.status(200).json({
-            message: "Food unsaved successfully"
+            message: "Food unsaved successfully",
+            isSaved: false
         })
     }
 
@@ -107,26 +124,21 @@ async function saveFood(req, res) {
 
     res.status(201).json({
         message: "Food saved successfully",
-        save
+        save,
+        isSaved: true
     })
 
 }
 
 async function getSaveFood(req, res) {
-
-    const user = req.user;
-
-    const savedFoods = await saveModel.find({ user: user._id }).populate('food');
-
-    if (!savedFoods || savedFoods.length === 0) {
-        return res.status(404).json({ message: "No saved foods found" });
-    }
+    const savedFoods = await saveModel
+        .find({ user: req.user._id })
+        .populate("food");
 
     res.status(200).json({
-        message: "Saved foods retrieved successfully",
+        message: "Saved foods fetched successfully",
         savedFoods
     });
-
 }
 
 

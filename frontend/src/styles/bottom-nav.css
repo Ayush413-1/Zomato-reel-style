@@ -14,11 +14,9 @@
 }
 
 .bottom-nav__inner {
-  max-width: 720px;
-  margin: 0 auto;
-  height: 100%;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
 }
 
 .bottom-nav__item {

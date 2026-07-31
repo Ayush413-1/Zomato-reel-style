@@ -22,12 +22,12 @@ const FoodPartnerProfile = () => {
 
   const saveRestaurantLink = async () => {
     try {
-      await axios.put(
-        `${import.meta.env.VITE_API_URL}/api/food-partner/restaurant-link`,
-        { restaurantLink },
+     const res = await axios.put(
+        `${import.meta.env.VITE_API_URL}/api/food-partner/me`,
+        // { restaurantLink },
         { withCredentials: true }
       );
-
+console.log(res.data);
       alert("Restaurant link saved successfully!");
     } catch (err) {
       console.log(err);

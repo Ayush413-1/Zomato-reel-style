@@ -213,6 +213,12 @@ async function getCurrentUser(req, res) {
     });
 }
 
+async function getCurrentFoodPartner(req, res) {
+  res.status(200).json({
+    foodPartner: req.foodPartner
+  });
+}
+
 module.exports = {
     registerUser,
     loginUser,
@@ -220,5 +226,6 @@ module.exports = {
     registerFoodPartner,
     loginFoodPartner,
     logoutFoodPartner,
-    getCurrentUser
+    getCurrentUser,
+    getCurrentFoodPartner
 }

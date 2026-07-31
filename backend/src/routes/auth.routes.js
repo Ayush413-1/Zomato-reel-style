@@ -1,6 +1,6 @@
 const express = require('express');
 const authController = require("../controllers/auth.controller")
-const {authMiddleware} = require("../middlewares/auth.middleware")
+const authMiddleware = require("../middlewares/auth.middleware")
 
 const router = express.Router();
 
@@ -18,5 +18,9 @@ router.get('/food-partner/logout', authController.logoutFoodPartner)
 
 
 router.get("/me",authMiddleware,authController.getCurrentUser);
+
+router.get("/food-partner/me", authMiddleware.authFoodPartnerMiddleware,
+    authController.getCurrentFoodPartner
+);
 
 module.exports = router;

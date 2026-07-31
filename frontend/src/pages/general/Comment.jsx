@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import "../../styles/comment.css";
 
@@ -11,7 +11,7 @@ const Comment = ({ foodId, onClose, onCommentAdded }) => {
   const [editText, setEditText] = useState("");
   const [currentUserId, setCurrentUserId] = useState("");
   const inputRef = useRef(null);
-  const apiBaseUrl = (import.meta.env.VITE_API_URL || "http://localhost:3000").replace(/\/$/, "");
+  const apiBaseUrl = (import.meta.env.VITE_API_URL || "").replace(/\/$/, "");
 
   useEffect(() => {
     const loadComments = async () => {
@@ -30,7 +30,7 @@ const Comment = ({ foodId, onClose, onCommentAdded }) => {
     };
 
     loadComments();
-  }, [foodId]);
+  }, [apiBaseUrl, foodId]);
 
   useEffect(() => {
     const timer = window.setTimeout(() => inputRef.current?.focus(), 180);

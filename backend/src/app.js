@@ -4,25 +4,32 @@ const authRoutes = require('./routes/auth.routes');
 const foodRoutes = require('./routes/food.routes');
 const foodPartnerRoutes = require('./routes/food-partner.routes');
 const cors = require('cors');
-const commentRoutes = require("./routes/comment.routes")
+const commentRoutes = require("./routes/comment.routes");
 
 const app = express();
 
 const allowedOrigins = [
     "http://localhost:5173",
+    "http://localhost:3000",
     "https://zomato-reel-style.vercel.app",
+    "https://zomato-reel-style.onrender.com",
     "https://zomato-reel-style-oi2gu96jk-ayush-7330.vercel.app",
-    "https://zomato-reel-style-63e14syxu-ayush-7330.vercel.app"
+    "https://zomato-reel-style-63e14syxu-ayush-7330.vercel.app",
+    "https://zomato-reel-style-ctttk9g6z-ayush-7330.vercel.app",
+    "https://zomato-reel-style-ru7t927z4-ayush-7330.vercel.app"
 ];
 
-const corsOptions = {
+const isAllowedOrigin = (origin) => {
+    if (!origin) return true;
+
+    if (allowedOrigins.includes(origin)) return true;
+
+    return /^(https?:\/\/)?([\w-]+\.)?vercel\.app$/i.test(origin) || /^(https?:\/\/)?([\w-]+\.)?vercel\.dev$/i.test(origin);
+};
+
+app.use(cors({
     origin: function (origin, callback) {
-
-        if (!origin) {
-            return callback(null, true);
-        }
-
-        if (allowedOrigins.includes(origin)) {
+        if (isAllowedOrigin(origin)) {
             return callback(null, true);
         }
 
@@ -41,24 +48,27 @@ const corsOptions = {
 
     allowedHeaders: [
         "Content-Type",
-        "Authorization"
-    ]
-};
+        "Authorization",
+        "X-Requested-With"
+    ],
 
+    optionsSuccessStatus: 204
+}));
 
-app.use(cors(corsOptions));
 
 app.use(cookieParser());
 app.use(express.json());
 
-app.get("/", (req, res) => {
+
+app.get("/", (req,res)=>{
     res.send("Hello World");
 });
+
 
 app.use('/api/auth', authRoutes);
 app.use('/api/food', foodRoutes);
 app.use('/api/food-partner', foodPartnerRoutes);
-app.use("/api/comment", commentRoutes);
+app.use('/api/comment', commentRoutes);
 
 
 module.exports = app;

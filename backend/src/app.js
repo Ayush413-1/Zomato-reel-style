@@ -11,6 +11,7 @@ const app = express();
 const allowedOrigins = [
     "http://localhost:5173",
     "https://zomato-reel-style.vercel.app",
+    "https://zomato-reel-style-oi2gu96jk-ayush-7330.vercel.app",
     "https://zomato-reel-style-63e14syxu-ayush-7330.vercel.app"
 ];
 
@@ -46,8 +47,6 @@ const corsOptions = {
 
 
 app.use(cors(corsOptions));
-
-// app.options("*", cors(corsOptions));
 
 app.use(cookieParser());
 app.use(express.json());
